@@ -21,8 +21,8 @@ function OnTrip({pickUp, dest,
 
   // for useEffect 
   const [seconds, setSeconds] = useState(600);
-  const [pickUpLatLong, setPickUpLatLong] = useState([0,0])
-  const [destLatLong, setDestLatLong] = useState([0,0])
+  var pickUpLatLong = []
+  var destLatLong = []
   const [licensePlate, setLicensePlate] = useState('')
 
   const handleDriverFound = (plate) => {
@@ -37,35 +37,34 @@ function OnTrip({pickUp, dest,
     Geocode.fromAddress(pickUp).then(
       (response) => {
         const { lat, lng } = response.results[0].geometry.location;
-        setPickUpLatLong([lat * 10 ** 3, lng * 10 ** 3])
+        pickUpLatLong = [Math.round(lat * 10 ** 3), Math.round(lng * 10 ** 3)]
         console.log("pickup lat long: ", lat, lng);
+
+        Geocode.fromAddress(dest).then(
+          (response) => {
+            const { lat, lng } = response.results[0].geometry.location;
+            destLatLong = [Math.round(lat * 10 ** 3), Math.round(lng * 10 ** 3)]
+            console.log("dest lat long: ", lat, lng);
+
+            // Set the src and dest lat long to the blockchain
+            const result = tx(writeContracts.YourContract.requestRide(pickUpLatLong[0], pickUpLatLong[1], destLatLong[0], destLatLong[1], { gasLimit: 6100000 }), update => {
+              console.log("📡 Transaction Update:", update);
+              if (update && (update.status === "confirmed" || update.status === 1)) {
+                console.log(" 🍾 Transaction " + update.hash + " finished!");
+              }
+            });
+            console.log("awaiting metamask/web3 confirm result...", result);
+            console.log(result);
+          },
+          (error) => {
+            console.error(error);
+          }
+        );
       },
       (error) => {
         console.error(error);
       }
-    );
-
-    Geocode.fromAddress(dest).then(
-      (response) => {
-        const { lat, lng } = response.results[0].geometry.location;
-        setDestLatLong([lat * 10 ** 3, lng * 10 ** 3])
-        console.log("dest lat long: ", lat, lng);
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-
-
-    // Set the src and dest lat long to the blockchain
-    const result = tx(writeContracts.YourContract.requestRide(pickUpLatLong[0], pickUpLatLong[1], destLatLong[0], destLatLong[1], { gasLimit: 6100000 }), update => {
-      console.log("📡 Transaction Update:", update);
-      if (update && (update.status === "confirmed" || update.status === 1)) {
-        console.log(" 🍾 Transaction " + update.hash + " finished!");
-      }
-    });
-    console.log("awaiting metamask/web3 confirm result...", result);
-    console.log(result);
+    )
 
   }, []);
 
