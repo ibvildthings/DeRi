@@ -1,6 +1,6 @@
 import './Timer.css';
 import React, { useState, useEffect, useCallback } from 'react';
-import { Button, SHAPE } from "baseui/Button";
+import {Button, SHAPE} from 'baseui/button';
 
 // 10 min timer
 function Timer({onIsOnlineChange, onIsRiderFoundChange, RidesEvents, address}) {
@@ -41,6 +41,7 @@ function Timer({onIsOnlineChange, onIsRiderFoundChange, RidesEvents, address}) {
     // if (!listening) {
     //   window.addEventListener(RidesEvents, handleRiderFound);
     //   listening = true;
+    // }
     return () => clearInterval(interval);
     
   }, [seconds]);
