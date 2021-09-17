@@ -13,8 +13,8 @@ contract YourContract {
     Driver[] public onlineDrivers;
 
     struct Coordinate {
-        uint256 lat;
-        uint256 lon;
+        int256 lat;
+        int256 lon;
     }
 
     struct Vehicle {
@@ -31,6 +31,7 @@ contract YourContract {
     event Rides(
         address indexed rider,
         address indexed driver,
+        string licensePlate,
         uint256 ride_fare,
         Coordinate src,
         Coordinate dest
@@ -55,8 +56,8 @@ contract YourContract {
     }
 
     function driverGoOnline(
-        uint256 lat,
-        uint256 lon,
+        int256 lat,
+        int256 lon,
         string memory licensePlate
     ) public {
         Driver memory driver = Driver(
@@ -71,10 +72,10 @@ contract YourContract {
 
     // Finds an online driver and pays them for the ride
     function request_ride(
-        uint256 srcLat,
-        uint256 srcLon,
-        uint256 destLat,
-        uint256 destLon
+        int256 srcLat,
+        int256 srcLon,
+        int256 destLat,
+        int256 destLon
     ) public payable {
         require(onlineDrivers.length > 0, "No online drivers!");
         address rider = msg.sender;
@@ -95,6 +96,7 @@ contract YourContract {
         emit Rides(
             msg.sender,
             assignedDriver.driverAddress,
+            assignedDriver.vehicle.licensePlate,
             RIDE_FARE,
             src,
             dest

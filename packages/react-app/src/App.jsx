@@ -24,8 +24,8 @@ import {
 import {
   useExchangeEthPrice,
 } from "eth-hooks/dapps/dex";
-// import Hints from "./Hints";
-import { ExampleUI, Hints, Subgraph } from "./views";
+// import Rider from "./Rider";
+import { Driver, Rider, Subgraph, Example } from "./views";
 
 import { useContractConfig } from "./hooks"
 import Portis from "@portis/web3";
@@ -451,31 +451,31 @@ function App(props) {
       <BrowserRouter>
         <Menu style={{ textAlign: "center" }} selectedKeys={[route]} mode="horizontal">
           <Menu.Item key="/">
-            <Link
+            {/* <Link
               onClick={() => {
                 setRoute("/");
               }}
               to="/"
             >
               Contract
-            </Link>
+            </Link> */}
           </Menu.Item>
-          <Menu.Item key="/exampleui">
+          <Menu.Item key="/driver">
             <Link
               onClick={() => {
-                setRoute("/exampleui");
+                setRoute("/driver");
               }}
-              to="/exampleui"
+              to="/driver"
             >
               Driver
             </Link>
           </Menu.Item>
-          <Menu.Item key="/hints">
+          <Menu.Item key="/rider">
             <Link
               onClick={() => {
-                setRoute("/hints");
+                setRoute("/rider");
               }}
-              to="/hints"
+              to="/rider"
             >
               Rider
             </Link>
@@ -499,16 +499,22 @@ function App(props) {
               contractConfig={contractConfig}
             />
           </Route>
-          <Route path="/hints">
-            <Hints
+          <Route path="/rider">
+            <Rider
               address={address}
-              yourLocalBalance={yourLocalBalance}
+              userSigner={userSigner}
               mainnetProvider={mainnetProvider}
+              localProvider={localProvider}
+              yourLocalBalance={yourLocalBalance}
               price={price}
+              tx={tx}
+              writeContracts={writeContracts}
+              readContracts={readContracts}
+              RidesEvents={RidesEvents}
             />
           </Route>
-          <Route path="/exampleui">
-            <ExampleUI
+          <Route path="/ex">
+            <Example
               address={address}
               userSigner={userSigner}
               mainnetProvider={mainnetProvider}
@@ -520,6 +526,20 @@ function App(props) {
               readContracts={readContracts}
               purpose={purpose}
               setPurposeEvents={setPurposeEvents}
+            />
+          </Route>
+          <Route path="/driver">
+            <Driver
+              address={address}
+              userSigner={userSigner}
+              mainnetProvider={mainnetProvider}
+              localProvider={localProvider}
+              yourLocalBalance={yourLocalBalance}
+              price={price}
+              tx={tx}
+              writeContracts={writeContracts}
+              readContracts={readContracts}
+              RidesEvents={RidesEvents}
             />
           </Route>
         </Switch>
