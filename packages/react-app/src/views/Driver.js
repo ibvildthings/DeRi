@@ -59,7 +59,7 @@ export default function Driver({
     state = <Timer onIsRiderFoundChange={setIsRiderFound} onIsOnlineChange={setIsOnline} RidesEvents={RidesEvents} address={address}/>
   }
   else if (isOnline && isRiderFound !== null) {
-    state = <OnJob onJobComplete={setIsRiderFound} riderInfo={isRiderFound}/>
+    state = <OnJob onJobComplete={setIsRiderFound} rideInfo={isRiderFound}/>
   }
 
   else {

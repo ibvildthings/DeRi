@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { Button, SHAPE  } from "baseui/button";
 
@@ -21,7 +21,7 @@ function OnJob({onJobComplete, rideInfo}) {
 
 
   function pickUpRiderClicked() {
-    console.log("Picking up rider")
+    console.log("Picking up rider" + rideInfo)
     window.open("https://maps.google.com?q="+pickUpLat+","+pickUpLong );
   }
 

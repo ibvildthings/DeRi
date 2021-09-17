@@ -33,9 +33,9 @@ function Timer({onIsOnlineChange, onIsRiderFoundChange, RidesEvents, address}) {
     // check events
     if (RidesEvents) {
       RidesEvents.reverse().forEach(ride => {
-        if (address == ride.args[1]) {
+        // if (address == ride.args[1]) {
           handleRiderFound(ride.args);
-        }
+        // }
       }
     )};
 

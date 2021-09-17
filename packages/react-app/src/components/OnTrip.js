@@ -46,7 +46,7 @@ function OnTrip({pickUp, dest,
             console.log("dest lat long: ", lat, lng);
 
             // Set the src and dest lat long to the blockchain
-            const result = tx(writeContracts.YourContract.requestRide(pickUpLatLong[0], pickUpLatLong[1], destLatLong[0], destLatLong[1], { gasLimit: 6100000 }), update => {
+            const result = tx(writeContracts.YourContract.requestRide(pickUpLatLong[0], pickUpLatLong[1], destLatLong[0], destLatLong[1]), update => {
               console.log("📡 Transaction Update:", update);
               if (update && (update.status === "confirmed" || update.status === 1)) {
                 console.log(" 🍾 Transaction " + update.hash + " finished!");
