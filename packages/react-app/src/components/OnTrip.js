@@ -34,7 +34,7 @@ function OnTrip({pickUp, dest,
     Geocode.fromAddress(pickUp).then(
       (response) => {
         const { lat, lng } = response.results[0].geometry.location;
-        setPickUpLatLong([lat * 10**3, lng * 10**3])
+        setPickUpLatLong([lat * 10 ** 3, lng * 10 ** 3])
         console.log("pickup lat long: ", lat, lng);
       },
       (error) => {
@@ -45,7 +45,7 @@ function OnTrip({pickUp, dest,
     Geocode.fromAddress(dest).then(
       (response) => {
         const { lat, lng } = response.results[0].geometry.location;
-        setDestLatLong([lat * 10**3, lng * 10**3])
+        setDestLatLong([lat * 10 ** 3, lng * 10 ** 3])
         console.log("dest lat long: ", lat, lng);
       },
       (error) => {
@@ -53,21 +53,12 @@ function OnTrip({pickUp, dest,
       }
     );
 
-        
+
     // Set the src and dest lat long to the blockchain
-    const result = tx(writeContracts.YourContract.requestRide(pickUpLatLong[0], pickUpLatLong[1], destLatLong[0], destLatLong[1]), update => {
+    const result = tx(writeContracts.YourContract.requestRide(pickUpLatLong[0], pickUpLatLong[1], destLatLong[0], destLatLong[1], { gasLimit: 6100000 }), update => {
       console.log("📡 Transaction Update:", update);
       if (update && (update.status === "confirmed" || update.status === 1)) {
         console.log(" 🍾 Transaction " + update.hash + " finished!");
-        console.log(
-          " ⛽️ " +
-          update.gasUsed +
-          "/" +
-          (update.gasLimit || update.gas) +
-          " @ " +
-          parseFloat(update.gasPrice) / 1000000000 +
-          " gwei",
-        );
       }
     });
     console.log("awaiting metamask/web3 confirm result...", result);

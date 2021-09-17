@@ -4,7 +4,8 @@ import React, { useState, useRef, useCallback } from 'react'
 // Mapbox Imports
 import 'mapbox-gl/dist/mapbox-gl.css'
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css'
-import ReactMapGL, {GeolocateControl} from 'react-map-gl'
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import ReactMapGL, {GeolocateControl} from '!react-map-gl'
 
 // Base UI imports
 import {
