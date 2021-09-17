@@ -18,6 +18,9 @@ function OnTrip({pickUp, dest,
   readContracts,
   writeContracts,
 }) {
+
+  // for useEffect 
+  const [seconds, setSeconds] = useState(600);
   const [pickUpLatLong, setPickUpLatLong] = useState([0,0])
   const [destLatLong, setDestLatLong] = useState([0,0])
   const [licensePlate, setLicensePlate] = useState('')
@@ -64,21 +67,30 @@ function OnTrip({pickUp, dest,
     console.log("awaiting metamask/web3 confirm result...", result);
     console.log(result);
 
-    // Add event Listener (only do this once)
-    // This is really bad I know but we have like 20 more min in the hackathon LOL
-    while(true) {
-      // check events
-      if (RidesEvents) {
-        RidesEvents.forEach(ride => {
-          if (address == ride.args[0]) {
-            setLicensePlate(ride.args[2]);
-            handleDriverFound(ride.args[2]);
-          }
-        }
-      )};
+  }, []);
+
+  useEffect(() => {
+    let interval = null;
+    if (seconds > 0) {
+      // Count down until 0 seconds
+      interval = setInterval(() => {
+        setSeconds(seconds => seconds - 1);
+      }, 1000);
     }
 
-  }, []);
+    // check events
+    if (RidesEvents) {
+      RidesEvents.forEach(ride => {
+        if (address == ride.args[0]) {
+          setLicensePlate(ride.args[2]);
+          handleDriverFound(ride.args[2]);
+        }
+      }
+    )};
+
+    return () => clearInterval(interval);
+    
+  }, [seconds]);
 
   return (
     <div>
