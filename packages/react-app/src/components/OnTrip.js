@@ -3,19 +3,19 @@ import React, { useEffect, useState } from 'react';
 import Geocode from "react-geocode";
 
 import { Spinner } from "baseui/spinner";
-Geocode.setApiKey("");
+Geocode.setApiKey("AIzaSyBvItWOP-p9FAJ3eaSswnikODYmSovRwLo");
 
 
 // OnTrip Step
-function OnTrip({pickUp, dest,
+function OnTrip({ pickUp, dest,
   tx,
   writeContracts,
   RidesEvents,
   mainnetProvider,
   localProvider
 }) {
-  const [pickUpLatLong, setPickUpLatLong] = useState([0,0])
-  const [destLatLong, setDestLatLong] = useState([0,0])
+  const [pickUpLatLong, setPickUpLatLong] = useState([0, 0])
+  const [destLatLong, setDestLatLong] = useState([0, 0])
   const [driverLicense, setDriverLicense] = useState('')
   let listening = false;
 
@@ -31,7 +31,7 @@ function OnTrip({pickUp, dest,
     Geocode.fromAddress(pickUp).then(
       (response) => {
         const { lat, lng } = response.results[0].geometry.location;
-        setPickUpLatLong([lat * 10**3, lng * 10**3])
+        setPickUpLatLong([lat * 10 ** 3, lng * 10 ** 3])
         console.log("pickup lat long: ", lat, lng);
       },
       (error) => {
@@ -42,7 +42,7 @@ function OnTrip({pickUp, dest,
     Geocode.fromAddress(dest).then(
       (response) => {
         const { lat, lng } = response.results[0].geometry.location;
-        setDestLatLong([lat * 10**3, lng * 10**3])
+        setDestLatLong([lat * 10 ** 3, lng * 10 ** 3])
         console.log("dest lat long: ", lat, lng);
       },
       (error) => {
@@ -50,21 +50,12 @@ function OnTrip({pickUp, dest,
       }
     );
 
-        
+
     // Set the src and dest lat long to the blockchain
-    const result = tx(writeContracts.YourContract.request_ride(pickUpLatLong[0], pickUpLatLong[1], destLatLong[0], destLatLong[1], { gasLimit: 6100000 }), update => {
+    const result = tx(writeContracts.YourContract.requestRide(pickUpLatLong[0], pickUpLatLong[1], destLatLong[0], destLatLong[1], { gasLimit: 6100000 }), update => {
       console.log("📡 Transaction Update:", update);
       if (update && (update.status === "confirmed" || update.status === 1)) {
         console.log(" 🍾 Transaction " + update.hash + " finished!");
-        console.log(
-          " ⛽️ " +
-          update.gasUsed +
-          "/" +
-          (update.gasLimit || update.gas) +
-          " @ " +
-          parseFloat(update.gasPrice) / 1000000000 +
-          " gwei",
-        );
       }
     });
     console.log("awaiting metamask/web3 confirm result...", result);
@@ -77,7 +68,7 @@ function OnTrip({pickUp, dest,
 
   return (
     <div>
-      {driverLicense.length > 0 ? <div> Looking for Driver... <Spinner/></div> : <div> Driver is coming: {driverLicense} </div>}
+      {driverLicense.length > 0 ? <div> Looking for Driver... <Spinner /></div> : <div> Driver is coming: {driverLicense} </div>}
     </div>
   );
 };
