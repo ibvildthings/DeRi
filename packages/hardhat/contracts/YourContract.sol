@@ -55,11 +55,22 @@ contract YourContract {
         emit SetPurpose(msg.sender, purpose);
     }
 
+    function getDriverCount() public view returns (uint256 count) {
+        return onlineDrivers.length;
+    }
+
     function driverGoOnline(
         int256 lat,
         int256 lon,
         string memory licensePlate
     ) public {
+        // check if the sender is already added as an online driver
+        for (uint256 i = 0; i < onlineDrivers.length; i++) {
+            if (onlineDrivers[i].driverAddress == msg.sender) {
+                return;
+            }
+        }
+
         Driver memory driver = Driver(
             address(msg.sender),
             Coordinate(lat, lon),
@@ -67,7 +78,6 @@ contract YourContract {
             block.timestamp
         );
         onlineDrivers.push(driver);
-        // TODO: check if the sender is already added as a online driver
     }
 
     // Finds an online driver and pays them for the ride
