@@ -104,11 +104,11 @@
     "extends": "react-app"
   },
   "scripts": {
-    "build": "react-scripts build",
-    "eject": "react-scripts eject",
+    "build": "craco build",
+    "eject": "craco eject",
     "prestart": "node ./scripts/create_contracts.js",
-    "start": "react-scripts start",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "test": "craco test",
     "lint": "eslint --config ./.eslintrc.js --ignore-path ./.eslintignore ./src/**/*",
     "ipfs": "node ./scripts/ipfs.js",
     "surge": "cp build/index.html build/200.html && surge ./build",
