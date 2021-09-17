@@ -3,8 +3,6 @@ pragma solidity >=0.8.0 <0.9.0;
 
 import "hardhat/console.sol";
 
-//import "@openzeppelin/contracts/access/Ownable.sol"; //https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
-
 contract YourContract {
     uint256 constant RIDE_FARE = 1;
 
@@ -17,14 +15,9 @@ contract YourContract {
         int256 lon;
     }
 
-    struct Vehicle {
-        string licensePlate;
-    }
-
     struct Driver {
         address driverAddress;
         Coordinate currentCoordinate;
-        Vehicle vehicle;
         uint256 updatedTime;
     }
 
@@ -44,11 +37,6 @@ contract YourContract {
         owner = msg.sender;
     }
 
-    function setLicensePlate(string memory licensePlate) public {
-        console.log(msg.sender, "set license plate to", licensePlate);
-        emit SetPurpose(msg.sender, licensePlate);
-    }
-
     function setPurpose(string memory newPurpose) public {
         purpose = newPurpose;
         console.log(msg.sender, "set purpose to", purpose);
@@ -59,14 +47,14 @@ contract YourContract {
         return onlineDrivers.length;
     }
 
-    function driverGoOnline(
-        int256 lat,
-        int256 lon,
-        string memory licensePlate
-    ) public {
+    function resetAll() public {
+        delete onlineDrivers;
+    }
+
+    function driverGoOnline(int256 lat, int256 lon) public {
         // check if the sender is already added as an online driver
         for (uint256 i = 0; i < onlineDrivers.length; i++) {
-            if (onlineDrivers[i].driverAddress == msg.sender) {
+            if (onlineDrivers[i].driverAddress != msg.sender) {
                 return;
             }
         }
@@ -74,19 +62,18 @@ contract YourContract {
         Driver memory driver = Driver(
             address(msg.sender),
             Coordinate(lat, lon),
-            Vehicle(licensePlate),
             block.timestamp
         );
         onlineDrivers.push(driver);
     }
 
     // Finds an online driver and pays them for the ride
-    function request_ride(
+    function requestRide(
         int256 srcLat,
         int256 srcLon,
         int256 destLat,
         int256 destLon
-    ) public payable {
+    ) public {
         require(onlineDrivers.length > 0, "No online drivers!");
         address rider = msg.sender;
         Coordinate memory src = Coordinate(srcLat, srcLon);
@@ -106,11 +93,22 @@ contract YourContract {
         emit Rides(
             msg.sender,
             assignedDriver.driverAddress,
-            assignedDriver.vehicle.licensePlate,
+            "",
             RIDE_FARE,
             src,
             dest
         );
-        payable(assignedDriver.driverAddress).transfer(RIDE_FARE);
+        // payable(assignedDriver.driverAddress).transfer(RIDE_FARE);
+    }
+
+    function emitTestRidesEvent() public {
+        emit Rides(
+            msg.sender,
+            msg.sender,
+            "",
+            RIDE_FARE,
+            Coordinate(0, 0),
+            Coordinate(0, 0)
+        );
     }
 }
