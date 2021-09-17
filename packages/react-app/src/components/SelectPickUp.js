@@ -19,6 +19,7 @@ function SelectPickUp({onPickUpChange, onPickUpConfirm}) {
   return (
     <div>
       <Input
+        value="555 Market Street San Francisco"
         onChange={handlePickUpChange}
         placeholder="Where are you coming from?"
       /> 
