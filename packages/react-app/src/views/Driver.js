@@ -37,7 +37,7 @@ export default function Driver({
 
   // State controls
   const [isOnline, setIsOnline] = useState(false)
-  const [isRiderFound, setIsRiderFound] = useState(null)
+  const [isRiderFound, setIsRiderFound] = useState(null) // This will house the contract
 
   // Map default view settings 
   const [viewport, setViewport] = useState({
@@ -58,7 +58,7 @@ export default function Driver({
     state = <Timer onIsRiderFoundChange={setIsRiderFound} onIsOnlineChange={setIsOnline} RidesEvents={RidesEvents} address={address}/>
   }
   else if (isOnline && isRiderFound !== null) {
-    state = <OnJob onJobComplete={setIsRiderFound} rideInfo={rideInfo}/>
+    state = <OnJob onJobComplete={setIsRiderFound} riderInfo={isRiderFound}/>
   }
 
   else {
