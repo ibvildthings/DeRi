@@ -19,7 +19,7 @@ function SelectDest({onDestinationChange, onDestinationConfirm}) {
   return (
     <div>
       <Input
-        value="1355 3rd Street San Francisco"
+        value="1655 3rd Street San Francisco"
         onChange={handleDestinationChange}
         placeholder="Where would you like to go?"
       /> 
