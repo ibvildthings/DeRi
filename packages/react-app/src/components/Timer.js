@@ -5,7 +5,6 @@ import {Button, SHAPE} from 'baseui/button';
 // 10 min timer
 function Timer({onIsOnlineChange, onIsRiderFoundChange, RidesEvents, address}) {
   const [seconds, setSeconds] = useState(600);
-  var listening = false;
 
 
   // Button click state handlers. Callback to parent
@@ -13,14 +12,8 @@ function Timer({onIsOnlineChange, onIsRiderFoundChange, RidesEvents, address}) {
     onIsOnlineChange(false)
   }, [onIsOnlineChange])
 
-  // TODO: Confirm this
-  const handleRiderFound = useCallback( (event) => {
-    if (event.value.driver == address) {
-      onIsRiderFoundChange(event.value)
-    }
-    else {
-      onIsRiderFoundChange(null)
-    }
+  const handleRiderFound = useCallback( (contract) => {
+      onIsRiderFoundChange(contract)
   }, [onIsRiderFoundChange])
 
   // Timer control
@@ -37,11 +30,15 @@ function Timer({onIsOnlineChange, onIsRiderFoundChange, RidesEvents, address}) {
       handleSetOffline();
     }
 
-    // Add event Listener (only do this once)
-    // if (!listening) {
-    //   window.addEventListener(RidesEvents, handleRiderFound);
-    //   listening = true;
-    // }
+    // check events
+    if (RidesEvents) {
+      RidesEvents.forEach(ride => {
+        if (address == ride.args[1]) {
+          handleRiderFound(ride.args);
+        }
+      }
+    )};
+
     return () => clearInterval(interval);
     
   }, [seconds]);

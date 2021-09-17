@@ -3,24 +3,27 @@ import React, { useEffect, useState } from 'react';
 import Geocode from "react-geocode";
 
 import { Spinner } from "baseui/spinner";
-Geocode.setApiKey("");
+Geocode.setApiKey("AIzaSyBvItWOP-p9FAJ3eaSswnikODYmSovRwLo");
 
 
 // OnTrip Step
 function OnTrip({pickUp, dest,
-  tx,
-  writeContracts,
   RidesEvents,
+  address,
   mainnetProvider,
-  localProvider
+  localProvider,
+  yourLocalBalance,
+  price,
+  tx,
+  readContracts,
+  writeContracts,
 }) {
   const [pickUpLatLong, setPickUpLatLong] = useState([0,0])
   const [destLatLong, setDestLatLong] = useState([0,0])
-  const [driverLicense, setDriverLicense] = useState('')
-  let listening = false;
+  const [licensePlate, setLicensePlate] = useState('')
 
-  const handleDriverFound = (event) => {
-    setDriverLicense(event.value.licensePlate)
+  const handleDriverFound = (plate) => {
+    setLicensePlate(plate)
   }
 
   // Geocode the addresses and send to chain
@@ -52,7 +55,7 @@ function OnTrip({pickUp, dest,
 
         
     // Set the src and dest lat long to the blockchain
-    const result = tx(writeContracts.YourContract.request_ride(pickUpLatLong[0], pickUpLatLong[1], destLatLong[0], destLatLong[1], { gasLimit: 6100000 }), update => {
+    const result = tx(writeContracts.YourContract.requestRide(pickUpLatLong[0], pickUpLatLong[1], destLatLong[0], destLatLong[1]), update => {
       console.log("📡 Transaction Update:", update);
       if (update && (update.status === "confirmed" || update.status === 1)) {
         console.log(" 🍾 Transaction " + update.hash + " finished!");
@@ -71,13 +74,24 @@ function OnTrip({pickUp, dest,
     console.log(result);
 
     // Add event Listener (only do this once)
-    window.addEventListener(RidesEvents, handleDriverFound);
+    // This is really bad I know but we have like 20 more min in the hackathon LOL
+    while(true) {
+      // check events
+      if (RidesEvents) {
+        RidesEvents.forEach(ride => {
+          if (address == ride.args[0]) {
+            setLicensePlate(ride.args[2]);
+            handleDriverFound(ride.args[2]);
+          }
+        }
+      )};
+    }
 
   }, []);
 
   return (
     <div>
-      {driverLicense.length > 0 ? <div> Looking for Driver... <Spinner/></div> : <div> Driver is coming: {driverLicense} </div>}
+      {licensePlate.length > 0 ? <div> Looking for Driver... <Spinner/></div> : <div> Driver is coming: {licensePlate} </div>}
     </div>
   );
 };
