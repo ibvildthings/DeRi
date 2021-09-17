@@ -71,10 +71,7 @@ function OnTrip({pickUp, dest,
     console.log(result);
 
     // Add event Listener (only do this once)
-    if (!listening) {
-      window.addEventListener(RidesEvents, handleDriverFound);
-      listening = true;
-    }
+    window.addEventListener(RidesEvents, handleDriverFound);
 
   }, []);
 
