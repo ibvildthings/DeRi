@@ -30,7 +30,6 @@ function OnTrip({pickUp, dest,
   }
 
   // Geocode the addresses and send to chain
-
   useEffect(() => {
     // Get latitude & longitude from address.
 
@@ -79,7 +78,7 @@ function OnTrip({pickUp, dest,
 
     // check events
     if (RidesEvents) {
-      RidesEvents.forEach(ride => {
+      RidesEvents.reverse().forEach(ride => {
         if (address == ride.args[0]) {
           setLicensePlate(ride.args[2]);
           handleDriverFound(ride.args[2]);
