@@ -4,30 +4,31 @@ import { Button, SHAPE } from "baseui/button";
 import { Input } from "baseui/input";
 
 // Select PickUp Step
-function SelectPickUp({onPickUpChange, onPickUpConfirm}) {
+function SelectPickUp({ onPickUpChange, onPickUpConfirm }) {
 
   // Button Click
-  const handleConfirmPickUp = useCallback( () => {
+  const handleConfirmPickUp = useCallback(() => {
     onPickUpConfirm(true)
   }, [onPickUpConfirm])
 
   // Typing
-  const handlePickUpChange = useCallback( (event) => {
+  const handlePickUpChange = useCallback((event) => {
     onPickUpChange(event.target.value)
   }, [onPickUpChange])
 
   return (
     <div>
       <Input
+        value="1455 Market Street San Francisco"
         onChange={handlePickUpChange}
         placeholder="Where are you coming from?"
-      /> 
+      />
 
-      <br/>
+      <br />
 
-     {/* Submit button */}
-      <Button 
-        overrides={{BaseButton: {style: {width: '100%'}}}}
+      {/* Submit button */}
+      <Button
+        overrides={{ BaseButton: { style: { width: '100%' } } }}
         shape={SHAPE.pill}
         onClick={handleConfirmPickUp} >
         Set Pick Up
