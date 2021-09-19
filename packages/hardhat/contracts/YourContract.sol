@@ -4,7 +4,7 @@ pragma solidity >=0.8.0 <0.9.0;
 import "hardhat/console.sol";
 
 contract YourContract {
-    uint256 constant  RIDE_FARE = 3560000000000000;
+    uint256 constant RIDE_FARE = 3560000000000000;
 
     address public owner;
 
@@ -18,7 +18,6 @@ contract YourContract {
     struct Driver {
         address driverAddress;
         Coordinate currentCoordinate;
-        Vehicle vehicle;
         string licensePlate;
         uint256 updatedTime;
     }
