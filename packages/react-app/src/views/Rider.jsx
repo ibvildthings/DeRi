@@ -4,8 +4,7 @@ import React, { useState, useRef, useCallback } from 'react'
 // Map Imports
 import 'mapbox-gl/dist/mapbox-gl.css'
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css'
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import ReactMapGL, {GeolocateControl} from '!react-map-gl'
+import ReactMapGL, { GeolocateControl } from '!react-map-gl'
 
 // Base UI imports
 import {
@@ -21,7 +20,7 @@ import { Input } from 'baseui/input';
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoibWlrZWU0NjkiLCJhIjoiY2t0a2FjZWM5MWp3YzJ3cWpjZHQ4emp6dSJ9.8yCFeeaDVi1qjQvPc5sG-Q';
 
-const geolocateControlStyle= {
+const geolocateControlStyle = {
   margin: "3%"
 }
 
@@ -54,15 +53,15 @@ function Rider({
   const handleViewportChange = useCallback(
     (newViewport) => setViewport(newViewport),
     []
-  );  
+  );
 
   // Track state of trip UI
   var state
 
   if (destinationConfirm && pickUpConfirm) {
     state = <OnTrip pickUp={pickUp} dest={destination}
-     tx={tx} writeContracts={writeContracts} RidesEvents={RidesEvents} mainnetProvider={mainnetProvider} 
-     localProvider={localProvider}/>
+      tx={tx} writeContracts={writeContracts} RidesEvents={RidesEvents} mainnetProvider={mainnetProvider}
+      localProvider={localProvider} />
   }
   else if (destinationConfirm && !pickUpConfirm) {
     state = <SelectPickUp onPickUpChange={setPickUp} onPickUpConfirm={setPickUpConfirm} />
@@ -70,7 +69,7 @@ function Rider({
   else {
     state = <SelectDest onDestinationChange={setDestination} onDestinationConfirm={setDestinationConfirm} />
   }
-  
+
 
   return (
     <div style={{ height: "100vh" }}>
@@ -84,24 +83,24 @@ function Rider({
         onViewportChange={handleViewportChange}
         mapboxApiAccessToken={MAPBOX_TOKEN}
       >
-        
+
         {/* State card */}
         <Card className="card-container">
           <StyledAction>
-            {destinationConfirm ? <div> To: <Input disabled value={destination}/> </div> : null}
-            {destinationConfirm ? <br/> : null}
-            {pickUpConfirm ? <div> From: <Input disabled value={pickUp}/> </div> : null}
-            {pickUpConfirm ? <br/>: null}
+            {destinationConfirm ? <div> To: <Input disabled value={destination} /> </div> : null}
+            {destinationConfirm ? <br /> : null}
+            {pickUpConfirm ? <div> From: <Input disabled value={pickUp} /> </div> : null}
+            {pickUpConfirm ? <br /> : null}
             {state}
           </StyledAction>
         </Card>
 
         <GeolocateControl
-        style={geolocateControlStyle}
-        positionOptions={{enableHighAccuracy: true}}
-        trackUserLocation={true}
-        auto
-      />
+          style={geolocateControlStyle}
+          positionOptions={{ enableHighAccuracy: true }}
+          trackUserLocation={true}
+          auto
+        />
       </ReactMapGL>
     </div>
   );

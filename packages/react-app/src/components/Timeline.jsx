@@ -13,6 +13,9 @@ export default function TimelineDisplay(props) {
       <Timeline.Item dot="💾">
         <Text delete>
           Clone and Install from the{" "}
+          <a target="_blank" rel="noopener noreferrer" href="">
+            github repo
+          </a>
         </Text>
       </Timeline.Item>
 

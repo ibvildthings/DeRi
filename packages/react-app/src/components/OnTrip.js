@@ -7,7 +7,7 @@ Geocode.setApiKey("AIzaSyBvItWOP-p9FAJ3eaSswnikODYmSovRwLo");
 
 
 // OnTrip Step
-function OnTrip({pickUp, dest,
+function OnTrip({ pickUp, dest,
   RidesEvents,
   address,
   mainnetProvider,
@@ -30,6 +30,7 @@ function OnTrip({pickUp, dest,
   }
 
   // Geocode the addresses and send to chain
+
   useEffect(() => {
     // Get latitude & longitude from address.
 
@@ -46,7 +47,7 @@ function OnTrip({pickUp, dest,
             console.log("dest lat long: ", lat, lng);
 
             // Set the src and dest lat long to the blockchain
-            const result = tx(writeContracts.YourContract.requestRide(pickUpLatLong[0], pickUpLatLong[1], destLatLong[0], destLatLong[1]), update => {
+            const result = tx(writeContracts.YourContract.requestRide(pickUpLatLong[0], pickUpLatLong[1], destLatLong[0], destLatLong[1], { gasLimit: 6100000 }), update => {
               console.log("📡 Transaction Update:", update);
               if (update && (update.status === "confirmed" || update.status === 1)) {
                 console.log(" 🍾 Transaction " + update.hash + " finished!");
@@ -84,15 +85,16 @@ function OnTrip({pickUp, dest,
           handleDriverFound(ride.args[2]);
         }
       }
-    )};
+      )
+    };
 
     return () => clearInterval(interval);
-    
+
   }, [seconds]);
 
   return (
     <div>
-      {licensePlate.length > 0 ? <div> Looking for Driver... <Spinner/></div> : <div> Driver is coming: {licensePlate} </div>}
+      {licensePlate.length > 0 ? <div> Looking for Driver... <Spinner /></div> : <div> Driver is coming: {licensePlate} </div>}
     </div>
   );
 };

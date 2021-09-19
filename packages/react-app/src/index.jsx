@@ -6,7 +6,7 @@ import App from "./App";
 import "./index.css";
 
 // Base UI imports
-import {BaseProvider, LightTheme} from 'baseui';
+import { BaseProvider, LightTheme } from 'baseui';
 import { Provider as StyletronProvider } from "styletron-react";
 import { Client as Styletron } from "styletron-engine-atomic";
 
@@ -33,7 +33,7 @@ ReactDOM.render(
         <BaseProvider theme={LightTheme}>
           <App subgraphUri={subgraphUri} />
         </BaseProvider>
-    </StyletronProvider>,]
+      </StyletronProvider>,]
     </ThemeSwitcherProvider>
   </ApolloProvider>,
   document.getElementById("root"),

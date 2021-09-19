@@ -4,8 +4,7 @@ import React, { useState, useRef, useCallback } from 'react'
 // Mapbox Imports
 import 'mapbox-gl/dist/mapbox-gl.css'
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css'
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import ReactMapGL, {GeolocateControl} from '!react-map-gl'
+import ReactMapGL, { GeolocateControl } from '!react-map-gl'
 
 // Base UI imports
 import {
@@ -20,7 +19,7 @@ import OnJob from '../components/OnJob';
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoibWlrZWU0NjkiLCJhIjoiY2t0a2FjZWM5MWp3YzJ3cWpjZHQ4emp6dSJ9.8yCFeeaDVi1qjQvPc5sG-Q';
 
-const geolocateControlStyle= {
+const geolocateControlStyle = {
   margin: "3%"
 }
 
@@ -56,16 +55,16 @@ export default function Driver({
   var state
 
   if (isOnline && isRiderFound === null) {
-    state = <Timer onIsRiderFoundChange={setIsRiderFound} onIsOnlineChange={setIsOnline} RidesEvents={RidesEvents} address={address}/>
+    state = <Timer onIsRiderFoundChange={setIsRiderFound} onIsOnlineChange={setIsOnline} RidesEvents={RidesEvents} address={address} />
   }
   else if (isOnline && isRiderFound !== null) {
-    state = <OnJob onJobComplete={setIsRiderFound} rideInfo={isRiderFound}/>
+    state = <OnJob onJobComplete={setIsRiderFound} rideInfo={isRiderFound} />
   }
 
   else {
     state = <GoOnline isOnline={isOnline} onIsOnlineChange={setIsOnline} tx={tx} writeContracts={writeContracts} />
   }
-  
+
 
   return (
     <div style={{ height: "100vh" }}>
@@ -79,7 +78,7 @@ export default function Driver({
         onViewportChange={handleViewportChange}
         mapboxApiAccessToken={MAPBOX_TOKEN}
       >
-        
+
         {/* State card */}
         <Card className="card-container">
           <StyledAction>
@@ -88,11 +87,11 @@ export default function Driver({
         </Card>
 
         <GeolocateControl
-        style={geolocateControlStyle}
-        positionOptions={{enableHighAccuracy: true}}
-        trackUserLocation={true}
-        auto
-      />
+          style={geolocateControlStyle}
+          positionOptions={{ enableHighAccuracy: true }}
+          trackUserLocation={true}
+          auto
+        />
       </ReactMapGL>
     </div>
   );

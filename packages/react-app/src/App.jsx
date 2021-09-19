@@ -53,10 +53,10 @@ const { ethers } = require("ethers");
 */
 
 /// 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const targetNetwork = NETWORKS.goerli; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
-const DEBUG = true;
+const DEBUG = false;
 const NETWORKCHECK = true;
 
 // 🛰 providers
@@ -450,16 +450,16 @@ function App(props) {
       {networkDisplay}
       <BrowserRouter>
         <Menu style={{ textAlign: "center" }} selectedKeys={[route]} mode="horizontal">
-          <Menu.Item key="/">
-            {/* <Link
+          {/* <Menu.Item key="/driver">
+            <Link
               onClick={() => {
-                setRoute("/");
+                setRoute("/driver");
               }}
-              to="/"
+              to="/driver"
             >
               Contract
-            </Link> */}
-          </Menu.Item>
+            </Link>
+          </Menu.Item> */}
           <Menu.Item key="/driver">
             <Link
               onClick={() => {

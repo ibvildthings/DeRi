@@ -5,12 +5,10 @@ import React from "react";
 
 export default function Header() {
   return (
-    <a target="_blank" rel="noopener noreferrer">
-      <PageHeader
-        title="🚘 DeRi"
-        subTitle="Degen Rides"
-        style={{ cursor: "pointer" }}
-      />
-    </a>
+    <PageHeader
+      title="🚘 DeRi"
+      subTitle="Degen Rides"
+      style={{ cursor: "pointer" }}
+    />
   );
 }
