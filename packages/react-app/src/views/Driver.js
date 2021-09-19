@@ -26,12 +26,7 @@ const geolocateControlStyle = {
 export default function Driver({
   RidesEvents,
   address,
-  mainnetProvider,
-  localProvider,
-  yourLocalBalance,
-  price,
   tx,
-  readContracts,
   writeContracts,
 }) {
 
@@ -60,7 +55,6 @@ export default function Driver({
   else if (isOnline && isRiderFound !== null) {
     state = <OnJob onJobComplete={setIsRiderFound} rideInfo={isRiderFound} />
   }
-
   else {
     state = <GoOnline isOnline={isOnline} onIsOnlineChange={setIsOnline} tx={tx} writeContracts={writeContracts} />
   }

@@ -76,7 +76,7 @@ function GoOnline({ isOnline, onIsOnlineChange,
 
   function solidityTransaction(lat, long, licensePlate) {
 
-    const result = tx(writeContracts['YourContract'].driverGoOnline(lat, long, { gasLimit: 6100000 }), update => {
+    const result = tx(writeContracts['YourContract'].driverGoOnline(lat, long, licensePlate, { gasLimit: 6100000 }), update => {
       console.log("📡 Transaction Update:", update);
       if (update && (update.status === "confirmed" || update.status === 1)) {
         console.log(" 🍾 Transaction " + update.hash + " finished!");
