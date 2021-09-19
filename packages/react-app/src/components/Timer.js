@@ -60,12 +60,12 @@ function Timer({ onIsOnlineChange, onIsRiderFoundChange, RidesEvents, address })
       </Button>
 
       {/* TODO: Temp button for state change to rider found */}
-      <Button className="offline-button"
+      {/* <Button className="offline-button"
         overrides={{ BaseButton: { style: { width: '30%' } } }}
         shape={SHAPE.pill}
         onClick={handleRiderFound} >
         Rider Found
-      </Button>
+      </Button> */}
     </div>
   );
 };
