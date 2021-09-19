@@ -4,7 +4,7 @@ pragma solidity >=0.8.0 <0.9.0;
 import "hardhat/console.sol";
 
 contract YourContract {
-    uint256 constant RIDE_FARE = 1;
+    uint256 constant  RIDE_FARE = 3560000000000000;
 
     address public owner;
 
@@ -18,6 +18,7 @@ contract YourContract {
     struct Driver {
         address driverAddress;
         Coordinate currentCoordinate;
+        Vehicle vehicle;
         string licensePlate;
         uint256 updatedTime;
     }
@@ -30,18 +31,9 @@ contract YourContract {
         Coordinate src,
         Coordinate dest
     );
-    event SetPurpose(address sender, string purpose);
-
-    string public purpose = "Building Unstoppable Apps!!!";
 
     constructor() {
         owner = msg.sender;
-    }
-
-    function setPurpose(string memory newPurpose) public {
-        purpose = newPurpose;
-        console.log(msg.sender, "set purpose to", purpose);
-        emit SetPurpose(msg.sender, purpose);
     }
 
     function getDriverCount() public view returns (uint256 count) {
@@ -59,9 +51,7 @@ contract YourContract {
     ) public {
         // check if the sender is already added as an online driver
         for (uint256 i = 0; i < onlineDrivers.length; i++) {
-            if (onlineDrivers[i].driverAddress != msg.sender) {
-                return;
-            }
+            require(onlineDrivers[i].driverAddress != msg.sender);
         }
 
         Driver memory driver = Driver(
@@ -80,6 +70,7 @@ contract YourContract {
         int256 destLat,
         int256 destLon
     ) public payable {
+        require(msg.value == RIDE_FARE, "Incorrect ride fare sent");
         require(onlineDrivers.length > 0, "No online drivers!");
 
         address rider = msg.sender;
