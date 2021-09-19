@@ -18,6 +18,7 @@ contract YourContract {
     struct Driver {
         address driverAddress;
         Coordinate currentCoordinate;
+        string licensePlate;
         uint256 updatedTime;
     }
 
@@ -51,7 +52,11 @@ contract YourContract {
         delete onlineDrivers;
     }
 
-    function driverGoOnline(int256 lat, int256 lon) public {
+    function driverGoOnline(
+        int256 lat,
+        int256 lon,
+        string memory licensePlate
+    ) public {
         // check if the sender is already added as an online driver
         for (uint256 i = 0; i < onlineDrivers.length; i++) {
             if (onlineDrivers[i].driverAddress != msg.sender) {
@@ -62,6 +67,7 @@ contract YourContract {
         Driver memory driver = Driver(
             address(msg.sender),
             Coordinate(lat, lon),
+            licensePlate,
             block.timestamp
         );
         onlineDrivers.push(driver);
@@ -73,13 +79,15 @@ contract YourContract {
         int256 srcLon,
         int256 destLat,
         int256 destLon
-    ) public {
+    ) public payable {
         require(onlineDrivers.length > 0, "No online drivers!");
+
         address rider = msg.sender;
         Coordinate memory src = Coordinate(srcLat, srcLon);
         Coordinate memory dest = Coordinate(destLat, destLon);
 
         Driver memory assignedDriver;
+        bool matchMade;
         for (uint256 i = 0; i < onlineDrivers.length; i++) {
             if (onlineDrivers[i].driverAddress != rider) {
                 assignedDriver = onlineDrivers[i];
@@ -87,25 +95,27 @@ contract YourContract {
                 // remove assigned driver from online drivers
                 onlineDrivers[i] = onlineDrivers[onlineDrivers.length - 1];
                 delete onlineDrivers[onlineDrivers.length - 1];
+                matchMade = true;
+                break;
             }
         }
-
+        require(matchMade, "No drivers found");
         emit Rides(
             msg.sender,
             assignedDriver.driverAddress,
-            "",
+            assignedDriver.licensePlate,
             RIDE_FARE,
             src,
             dest
         );
-        // payable(assignedDriver.driverAddress).transfer(RIDE_FARE);
+        payable(assignedDriver.driverAddress).transfer(RIDE_FARE);
     }
 
     function emitTestRidesEvent() public {
         emit Rides(
             msg.sender,
             msg.sender,
-            "",
+            "TSLA",
             RIDE_FARE,
             Coordinate(0, 0),
             Coordinate(0, 0)
