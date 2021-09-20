@@ -8,6 +8,8 @@ contract YourContract {
     // assuming 2$/km and 1 ETH = 3206.30$
     uint256 constant FARE_PER_METER = 1200000000000;
     uint256 constant MAX_TRIP_DISTANCE_METERS = 100 * 1000; // 100 KMs
+    // Max distance between Rider and Driver for them to be matched
+    uint256 constant MATCHING_RADIUS_METERS = 10 * 1000; // 10 KMs
 
     address public owner;
 
@@ -82,7 +84,8 @@ contract YourContract {
         Driver memory assignedDriver;
         bool matchMade;
         for (uint64 i = 0; i < onlineDrivers.length; i++) {
-            if (onlineDrivers[i].driverAddress != rider) {
+            if (onlineDrivers[i].driverAddress != rider &&
+                calculateDistance(srcLat, srcLon, destLat, destLon) < MATCHING_RADIUS_METERS) {
                 assignedDriver = onlineDrivers[i];
 
                 // remove assigned driver from online drivers
