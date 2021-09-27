@@ -223,7 +223,7 @@ function App(props) {
 
   // 📟 Listen for broadcast events
   const setPurposeEvents = useEventListener(readContracts, "YourContract", "SetPurpose", localProvider, 1);
-  const RidesEvents = useEventListener(readContracts, "YourContract", "Rides", localProvider, mainnetProvider._lastBlockNumber);
+  const RidesEvents = useEventListener(readContracts, "YourContract", "Rides", localProvider, localProvider._lastBlockNumber);
   /*
   const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
   console.log("🏷 Resolved austingriffith.eth as:",addressFromENS)

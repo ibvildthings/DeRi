@@ -4,6 +4,7 @@ const chalk = require("chalk");
 
 require("@nomiclabs/hardhat-waffle");
 require("@tenderly/hardhat-tenderly");
+require("@nomiclabs/hardhat-etherscan");
 
 require("hardhat-deploy");
 
@@ -85,6 +86,11 @@ module.exports = {
       accounts: {
         mnemonic: mnemonic(),
       },
+      etherscan: {
+        // Your API key for Etherscan
+        // Obtain one at https://etherscan.io/
+        apiKey: ""
+      }
     },
     ropsten: {
       url: "https://ropsten.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)

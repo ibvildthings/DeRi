@@ -50,7 +50,8 @@
     "graph-ship-local": "yarn graph-prepare && yarn graph-codegen && yarn graph-deploy-local",
     "deploy-and-graph": "yarn deploy && yarn graph-ship-local",
     "theme": "yarn workspace @scaffold-eth/react-app theme",
-    "watch-theme": "yarn workspace @scaffold-eth/react-app watch"
+    "watch-theme": "yarn workspace @scaffold-eth/react-app watch",
+    "etherscan-verify": "yarn workspace @scaffold-eth/hardhat etherscan-verify"
   },
   "workspaces": {
     "packages": [
@@ -65,5 +66,10 @@
       "**/hardhat-ts/**"
     ]
   },
-  "dependencies": {}
+  "dependencies": {
+    "hardhat": "^2.6.4"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-etherscan": "^2.1.6"
+  }
 }
