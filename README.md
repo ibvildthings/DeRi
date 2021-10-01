@@ -1,5 +1,8 @@
 # DeRi - Decentralized Rideshare
 
+# About
+[The Case for Building a Decentralized Uber](https://www.linkedin.com/posts/activity-6847441692170313728-fFp5)
+
 # 🏄‍♂️ Quick Start
 
 Prerequisites: [Node](https://nodejs.org/en/download/) plus [Yarn](https://classic.yarnpkg.com/en/docs/install/) and [Git](https://git-scm.com/downloads)
