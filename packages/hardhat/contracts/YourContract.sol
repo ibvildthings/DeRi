@@ -1,7 +1,10 @@
-pragma solidity >=0.8.0 <0.9.0;
+pragma solidity >=0.6.0 <0.8.0;
+pragma experimental ABIEncoderV2;
 //SPDX-License-Identifier: MIT
 
 import "hardhat/console.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
 
 // We build this in the name of Satoshi.
 // We build this in the name of Uber.
@@ -11,13 +14,13 @@ import "hardhat/console.sol";
 // Built by:
 // Pritesh Mohan Desai, Gaurav Nanda, Kalyanaraman Santhanam, Michael Elias, Christopher Yee, Reece Mak
 
-contract YourContract {
-    uint64 constant RIDE_FARE = 3560000000000000;
-    // assuming 2$/km and 1 ETH = 3206.30$
-    uint256 constant FARE_PER_METER = 1200000000000;
-    uint256 constant MAX_TRIP_DISTANCE_METERS = 100 * 1000; // 100 KMs
+contract YourContract is Ownable {
+    using Address for address;
+    using Address for address payable;
 
-    address public owner;
+    uint256 RIDE_FARE;
+    uint256 FARE_PER_METER;
+    uint256 MAX_TRIP_DISTANCE_METERS;
 
     Driver[] public onlineDrivers;
 
@@ -36,20 +39,26 @@ contract YourContract {
         address indexed rider,
         address indexed driver,
         string licensePlate,
-        uint64 ride_fare,
+        uint256 ride_fare,
         Coordinate src,
         Coordinate dest
     );
 
-    constructor() {
-        owner = msg.sender;
+    constructor(
+        uint256 rideFare,
+        uint256 farePerMeter,
+        uint256 maxTripDistanceMeter
+    ) public {
+        RIDE_FARE = rideFare;
+        FARE_PER_METER = farePerMeter;
+        MAX_TRIP_DISTANCE_METERS = maxTripDistanceMeter;
     }
 
     function getDriverCount() public view returns (uint256 count) {
         return onlineDrivers.length;
     }
 
-    function resetAll() public {
+    function resetAll() public onlyOwner {
         delete onlineDrivers;
     }
 
@@ -60,7 +69,10 @@ contract YourContract {
     ) public {
         // check if the sender is already added as an online driver
         for (uint64 i = 0; i < onlineDrivers.length; i++) {
-            require(onlineDrivers[i].driverAddress != msg.sender);
+            require(
+                onlineDrivers[i].driverAddress != msg.sender,
+                "Rider cannot be a driver"
+            );
         }
 
         Driver memory driver = Driver(
@@ -87,13 +99,13 @@ contract YourContract {
 
         Driver memory assignedDriver;
         bool matchMade;
-        for (uint64 i = 0; i < onlineDrivers.length; i++) {
+        for (uint256 i = 0; i < onlineDrivers.length; i++) {
             if (onlineDrivers[i].driverAddress != rider) {
                 assignedDriver = onlineDrivers[i];
 
                 // remove assigned driver from online drivers
                 onlineDrivers[i] = onlineDrivers[onlineDrivers.length - 1];
-                delete onlineDrivers[onlineDrivers.length - 1];
+                onlineDrivers.pop();
                 matchMade = true;
                 break;
             }
@@ -107,7 +119,7 @@ contract YourContract {
             src,
             dest
         );
-        payable(assignedDriver.driverAddress).transfer(RIDE_FARE);
+        payable(assignedDriver.driverAddress).sendValue(RIDE_FARE);
     }
 
     function calculateFare(
@@ -115,7 +127,7 @@ contract YourContract {
         int64 srcLon,
         int64 destLat,
         int64 destLon
-    ) public pure returns (uint256) {
+    ) public view returns (uint256) {
         require(
             (srcLat > 0 && destLat > 0) || (srcLat < 0 && destLat < 0),
             "Too far away"
@@ -165,5 +177,15 @@ contract YourContract {
             y = z;
             z = (x / z + z) / 2;
         }
+    }
+
+    function setFare(
+        uint256 rideFare,
+        uint256 farePerMeter,
+        uint256 maxTripDistanceMeter
+    ) public onlyOwner {
+        RIDE_FARE = rideFare;
+        FARE_PER_METER = farePerMeter;
+        MAX_TRIP_DISTANCE_METERS = maxTripDistanceMeter;
     }
 }
