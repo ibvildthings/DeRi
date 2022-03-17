@@ -1,7 +1,7 @@
 # DeRi - Decentralized Rideshare
 
 # 🚘 About
-👉 [The Case for Building a Decentralized Uber](https://www.linkedin.com/posts/activity-6847441692170313728-fFp5)
+👉 [The Case for Building a Decentralized Uber](https://www.degenrides.io)
 
 # 🏄‍♂️ Quick Start
 
